@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UQ_Enrollment_CourseId_UserId", columnNames = { "course_id", "user_id" }) })
 public class Enrollment {
 
     @Id
@@ -27,6 +28,13 @@ public class Enrollment {
     protected Enrollment() {}
 
     public Enrollment(Course course, User user) {
+        this.course = course;
+        this.user = user;
+    }
+
+    public Enrollment(Long id, LocalDateTime enrollment_date, Course course, User user) {
+        this.id = id;
+        this.enrollment_date = enrollment_date;
         this.course = course;
         this.user = user;
     }

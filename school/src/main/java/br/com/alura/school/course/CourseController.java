@@ -2,6 +2,7 @@ package br.com.alura.school.course;
 
 import br.com.alura.school.enrollment.Enrollment;
 import br.com.alura.school.enrollment.EnrollmentRepository;
+import br.com.alura.school.enrollment.EnrollmentResponse;
 import br.com.alura.school.enrollment.NewEnrollmentRequest;
 import br.com.alura.school.user.User;
 import br.com.alura.school.user.UserRepository;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 class CourseController {
@@ -65,5 +67,14 @@ class CourseController {
 
         enrollmentRepository.save(new Enrollment(course, user));
         return ResponseEntity.status(CREATED).build();
+    }
+
+    @GetMapping("/courses/enroll/report")
+    ResponseEntity<List<EnrollmentResponse>> findAllEnrollments() {
+        List<EnrollmentResponse> enrollments = enrollmentRepository.countEnrollsAndUsername();
+        if (enrollments.isEmpty()) {
+            return ResponseEntity.status(NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(enrollments);
     }
 }

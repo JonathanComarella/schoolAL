@@ -128,4 +128,10 @@ class CourseControllerTest {
                         .content(jsonMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void should_no_content_if_no_user_is_enrolled() throws Exception {
+        mockMvc.perform(get("/courses/enroll/report"))
+                .andExpect(status().isNoContent());
+    }
 }
